@@ -1,5 +1,14 @@
 // Card symbols (emoji pairs)
-const cardSymbols = ['🎮', '🎲', '🎯', '🎪', '🎨', '🎭', '🎵', '🎸'];
+const allSymbols = ['🎮', '🎲', '🎯', '🎪', '🎨', '🎭', '🎵', '🎸', '🎺', '🎻', '🏀', '⚽'];
+
+// Difficulty settings
+const difficultySettings = {
+    easy: { pairs: 4, gridClass: 'easy' },
+    normal: { pairs: 8, gridClass: 'normal' },
+    hard: { pairs: 12, gridClass: 'hard' }
+};
+
+let currentDifficulty = 'easy';
 
 // Game state
 let cards = [];
@@ -22,6 +31,7 @@ const finalMovesDisplay = document.getElementById('final-moves');
 const playAgainBtn = document.getElementById('play-again-btn');
 const timerDisplay = document.getElementById('timer');
 const finalTimeDisplay = document.getElementById('final-time');
+const diffButtons = document.querySelectorAll('.diff-btn');
 
 // Initialize game
 function initGame() {
@@ -38,11 +48,18 @@ function initGame() {
     seconds = 0;
     timerDisplay.textContent = '00:00';
 
+    // Get current difficulty settings
+    const settings = difficultySettings[currentDifficulty];
+    const cardSymbols = allSymbols.slice(0, settings.pairs);
+
     // Update display
     movesDisplay.textContent = '0';
     matchedDisplay.textContent = '0';
-    totalDisplay.textContent = cardSymbols.length;
+    totalDisplay.textContent = settings.pairs;
     winModal.classList.remove('show');
+
+    // Update grid class
+    gameBoard.className = 'game-board ' + settings.gridClass;
 
     // Create card pairs
     const cardPairs = [...cardSymbols, ...cardSymbols];
@@ -161,7 +178,8 @@ function handleMatch(firstIndex, secondIndex) {
     flippedCards = [];
 
     // Check for win
-    if (matchedPairs === cardSymbols.length) {
+    const settings = difficultySettings[currentDifficulty];
+    if (matchedPairs === settings.pairs) {
         setTimeout(showWinModal, 500);
     }
 }
@@ -210,6 +228,19 @@ function formatTime(totalSeconds) {
 // Event listeners
 restartBtn.addEventListener('click', initGame);
 playAgainBtn.addEventListener('click', initGame);
+
+// Difficulty button listeners
+diffButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        // Update active button
+        diffButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        // Set difficulty and restart game
+        currentDifficulty = btn.dataset.difficulty;
+        initGame();
+    });
+});
 
 // Start game
 initGame();

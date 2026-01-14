@@ -31,9 +31,45 @@ header p {
 }
 
 main {
-    max-width: 600px;
+    max-width: 700px;
     margin: 0 auto;
     padding: 0 20px;
+}
+
+.difficulty-selector {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.difficulty-selector .label {
+    color: #8892b0;
+    margin-right: 5px;
+}
+
+.diff-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid transparent;
+    color: #8892b0;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.diff-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+}
+
+.diff-btn.active {
+    background: linear-gradient(90deg, #00d9ff, #00ff88);
+    color: #1a1a2e;
+    font-weight: bold;
 }
 
 .game-info {
@@ -78,6 +114,20 @@ main {
     grid-template-columns: repeat(4, 1fr);
     gap: 15px;
     perspective: 1000px;
+}
+
+.game-board.easy {
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.game-board.normal {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.game-board.hard {
+    grid-template-columns: repeat(6, 1fr);
 }
 
 .card {
