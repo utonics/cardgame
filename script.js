@@ -7,6 +7,9 @@ let flippedCards = [];
 let matchedPairs = 0;
 let moves = 0;
 let isLocked = false;
+let timerInterval = null;
+let seconds = 0;
+let gameStarted = false;
 
 // DOM elements
 const gameBoard = document.getElementById('game-board');
@@ -17,6 +20,8 @@ const restartBtn = document.getElementById('restart-btn');
 const winModal = document.getElementById('win-modal');
 const finalMovesDisplay = document.getElementById('final-moves');
 const playAgainBtn = document.getElementById('play-again-btn');
+const timerDisplay = document.getElementById('timer');
+const finalTimeDisplay = document.getElementById('final-time');
 
 // Initialize game
 function initGame() {
@@ -26,6 +31,12 @@ function initGame() {
     matchedPairs = 0;
     moves = 0;
     isLocked = false;
+    gameStarted = false;
+
+    // Reset timer
+    stopTimer();
+    seconds = 0;
+    timerDisplay.textContent = '00:00';
 
     // Update display
     movesDisplay.textContent = '0';
@@ -87,6 +98,12 @@ function handleCardClick(index) {
     // Ignore if locked, already flipped, or already matched
     if (isLocked || card.isFlipped || card.isMatched) {
         return;
+    }
+
+    // Start timer on first card click
+    if (!gameStarted) {
+        gameStarted = true;
+        startTimer();
     }
 
     // Flip card
@@ -163,8 +180,31 @@ function handleMismatch(firstIndex, secondIndex) {
 
 // Show win modal
 function showWinModal() {
+    stopTimer();
+    finalTimeDisplay.textContent = formatTime(seconds);
     finalMovesDisplay.textContent = moves;
     winModal.classList.add('show');
+}
+
+// Timer functions
+function startTimer() {
+    timerInterval = setInterval(() => {
+        seconds++;
+        timerDisplay.textContent = formatTime(seconds);
+    }, 1000);
+}
+
+function stopTimer() {
+    if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+    }
+}
+
+function formatTime(totalSeconds) {
+    const mins = Math.floor(totalSeconds / 60);
+    const secs = totalSeconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
 }
 
 // Event listeners

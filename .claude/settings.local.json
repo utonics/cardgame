@@ -12,7 +12,9 @@
       "Bash(git push:*)",
       "Bash(gh repo edit:*)",
       "Bash(start \"\" \"https://utonics.github.io/cardgame/\")",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(git pull:*)",
+      "Bash(git stash:*)"
     ]
   }
 }
