@@ -32,6 +32,9 @@ const playAgainBtn = document.getElementById('play-again-btn');
 const timerDisplay = document.getElementById('timer');
 const finalTimeDisplay = document.getElementById('final-time');
 const diffButtons = document.querySelectorAll('.diff-btn');
+const bestTimeDisplay = document.getElementById('best-time');
+const bestMovesDisplay = document.getElementById('best-moves');
+const newRecordDisplay = document.getElementById('new-record');
 
 // Initialize game
 function initGame() {
@@ -57,6 +60,10 @@ function initGame() {
     matchedDisplay.textContent = '0';
     totalDisplay.textContent = settings.pairs;
     winModal.classList.remove('show');
+    newRecordDisplay.classList.remove('show');
+
+    // Display best record for current difficulty
+    displayBestRecord();
 
     // Update grid class
     gameBoard.className = 'game-board ' + settings.gridClass;
@@ -201,6 +208,16 @@ function showWinModal() {
     stopTimer();
     finalTimeDisplay.textContent = formatTime(seconds);
     finalMovesDisplay.textContent = moves;
+
+    // Check and save best record
+    const isNewRecord = checkAndSaveBestRecord();
+    if (isNewRecord) {
+        newRecordDisplay.classList.add('show');
+        displayBestRecord();
+    } else {
+        newRecordDisplay.classList.remove('show');
+    }
+
     winModal.classList.add('show');
 }
 
@@ -223,6 +240,48 @@ function formatTime(totalSeconds) {
     const mins = Math.floor(totalSeconds / 60);
     const secs = totalSeconds % 60;
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+}
+
+// Best record functions
+function getBestRecord() {
+    const key = `bestRecord_${currentDifficulty}`;
+    const record = localStorage.getItem(key);
+    return record ? JSON.parse(record) : null;
+}
+
+function saveBestRecord(time, moves) {
+    const key = `bestRecord_${currentDifficulty}`;
+    localStorage.setItem(key, JSON.stringify({ time, moves }));
+}
+
+function checkAndSaveBestRecord() {
+    const currentRecord = getBestRecord();
+
+    // No previous record - this is automatically the best
+    if (!currentRecord) {
+        saveBestRecord(seconds, moves);
+        return true;
+    }
+
+    // Compare: first by time, then by moves if time is equal
+    if (seconds < currentRecord.time ||
+        (seconds === currentRecord.time && moves < currentRecord.moves)) {
+        saveBestRecord(seconds, moves);
+        return true;
+    }
+
+    return false;
+}
+
+function displayBestRecord() {
+    const record = getBestRecord();
+    if (record) {
+        bestTimeDisplay.textContent = formatTime(record.time);
+        bestMovesDisplay.textContent = record.moves;
+    } else {
+        bestTimeDisplay.textContent = '--:--';
+        bestMovesDisplay.textContent = '-';
+    }
 }
 
 // Event listeners
