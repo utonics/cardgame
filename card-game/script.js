@@ -38,7 +38,6 @@ const newRecordDisplay = document.getElementById('new-record');
 
 // Initialize game
 function initGame() {
-    // Reset state
     cards = [];
     flippedCards = [];
     matchedPairs = 0;
@@ -46,67 +45,45 @@ function initGame() {
     isLocked = false;
     gameStarted = false;
 
-    // Reset timer
     stopTimer();
     seconds = 0;
     timerDisplay.textContent = '00:00';
 
-    // Get current difficulty settings
     const settings = difficultySettings[currentDifficulty];
     const cardSymbols = allSymbols.slice(0, settings.pairs);
 
-    // Update display
     movesDisplay.textContent = '0';
     matchedDisplay.textContent = '0';
     totalDisplay.textContent = settings.pairs;
     winModal.classList.remove('show');
     newRecordDisplay.classList.remove('show');
 
-    // Display best record for current difficulty
     displayBestRecord();
-
-    // Update grid class
     gameBoard.className = 'game-board ' + settings.gridClass;
 
-    // Create card pairs
     const cardPairs = [...cardSymbols, ...cardSymbols];
-
-    // Shuffle cards
     shuffleArray(cardPairs);
-
-    // Clear board
     gameBoard.innerHTML = '';
 
-    // Create card elements
     cardPairs.forEach((symbol, index) => {
         const card = createCardElement(symbol, index);
         gameBoard.appendChild(card);
-        cards.push({
-            element: card,
-            symbol: symbol,
-            isFlipped: false,
-            isMatched: false
-        });
+        cards.push({ element: card, symbol, isFlipped: false, isMatched: false });
     });
 }
 
-// Create card DOM element
 function createCardElement(symbol, index) {
     const card = document.createElement('div');
     card.className = 'card';
     card.dataset.index = index;
-
     card.innerHTML = `
         <div class="card-face card-back"></div>
         <div class="card-face card-front">${symbol}</div>
     `;
-
     card.addEventListener('click', () => handleCardClick(index));
-
     return card;
 }
 
-// Shuffle array (Fisher-Yates algorithm)
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -115,28 +92,18 @@ function shuffleArray(array) {
     return array;
 }
 
-// Handle card click
 function handleCardClick(index) {
     const card = cards[index];
+    if (isLocked || card.isFlipped || card.isMatched) return;
 
-    // Ignore if locked, already flipped, or already matched
-    if (isLocked || card.isFlipped || card.isMatched) {
-        return;
-    }
-
-    // Start timer on first card click
     if (!gameStarted) {
         gameStarted = true;
         startTimer();
     }
 
-    // Flip card
     flipCard(index);
-
-    // Add to flipped cards
     flippedCards.push(index);
 
-    // Check for match when two cards are flipped
     if (flippedCards.length === 2) {
         moves++;
         movesDisplay.textContent = moves;
@@ -144,57 +111,46 @@ function handleCardClick(index) {
     }
 }
 
-// Flip card
 function flipCard(index) {
     cards[index].isFlipped = true;
     cards[index].element.classList.add('flipped');
 }
 
-// Unflip card
 function unflipCard(index) {
     cards[index].isFlipped = false;
     cards[index].element.classList.remove('flipped');
 }
 
-// Check for match
 function checkForMatch() {
     const [firstIndex, secondIndex] = flippedCards;
     const firstCard = cards[firstIndex];
     const secondCard = cards[secondIndex];
 
     if (firstCard.symbol === secondCard.symbol) {
-        // Match found
         handleMatch(firstIndex, secondIndex);
     } else {
-        // No match
         handleMismatch(firstIndex, secondIndex);
     }
 }
 
-// Handle match
 function handleMatch(firstIndex, secondIndex) {
     cards[firstIndex].isMatched = true;
     cards[secondIndex].isMatched = true;
-
     cards[firstIndex].element.classList.add('matched');
     cards[secondIndex].element.classList.add('matched');
 
     matchedPairs++;
     matchedDisplay.textContent = matchedPairs;
-
     flippedCards = [];
 
-    // Check for win
     const settings = difficultySettings[currentDifficulty];
     if (matchedPairs === settings.pairs) {
         setTimeout(showWinModal, 500);
     }
 }
 
-// Handle mismatch
 function handleMismatch(firstIndex, secondIndex) {
     isLocked = true;
-
     setTimeout(() => {
         unflipCard(firstIndex);
         unflipCard(secondIndex);
@@ -203,13 +159,11 @@ function handleMismatch(firstIndex, secondIndex) {
     }, 1000);
 }
 
-// Show win modal
 function showWinModal() {
     stopTimer();
     finalTimeDisplay.textContent = formatTime(seconds);
     finalMovesDisplay.textContent = moves;
 
-    // Check and save best record
     const isNewRecord = checkAndSaveBestRecord();
     if (isNewRecord) {
         newRecordDisplay.classList.add('show');
@@ -217,11 +171,9 @@ function showWinModal() {
     } else {
         newRecordDisplay.classList.remove('show');
     }
-
     winModal.classList.add('show');
 }
 
-// Timer functions
 function startTimer() {
     timerInterval = setInterval(() => {
         seconds++;
@@ -244,32 +196,26 @@ function formatTime(totalSeconds) {
 
 // Best record functions
 function getBestRecord() {
-    const key = `bestRecord_${currentDifficulty}`;
+    const key = `cardGame_best_${currentDifficulty}`;
     const record = localStorage.getItem(key);
     return record ? JSON.parse(record) : null;
 }
 
 function saveBestRecord(time, moves) {
-    const key = `bestRecord_${currentDifficulty}`;
+    const key = `cardGame_best_${currentDifficulty}`;
     localStorage.setItem(key, JSON.stringify({ time, moves }));
 }
 
 function checkAndSaveBestRecord() {
     const currentRecord = getBestRecord();
-
-    // No previous record - this is automatically the best
     if (!currentRecord) {
         saveBestRecord(seconds, moves);
         return true;
     }
-
-    // Compare: first by time, then by moves if time is equal
-    if (seconds < currentRecord.time ||
-        (seconds === currentRecord.time && moves < currentRecord.moves)) {
+    if (seconds < currentRecord.time || (seconds === currentRecord.time && moves < currentRecord.moves)) {
         saveBestRecord(seconds, moves);
         return true;
     }
-
     return false;
 }
 
@@ -288,18 +234,13 @@ function displayBestRecord() {
 restartBtn.addEventListener('click', initGame);
 playAgainBtn.addEventListener('click', initGame);
 
-// Difficulty button listeners
 diffButtons.forEach(btn => {
     btn.addEventListener('click', () => {
-        // Update active button
         diffButtons.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-
-        // Set difficulty and restart game
         currentDifficulty = btn.dataset.difficulty;
         initGame();
     });
 });
 
-// Start game
 initGame();

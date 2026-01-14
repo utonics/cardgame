@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>테트리스</title>
+    <link rel="stylesheet" href="../shared/common.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <a href="../" class="back-link">← 게임 목록으로</a>
+        <h1>테트리스</h1>
+        <p>블록을 쌓아 줄을 완성하세요!</p>
+    </header>
+
+    <main>
+        <div class="game-container">
+            <div class="side-panel left">
+                <div class="panel-box">
+                    <h3>최고 점수</h3>
+                    <div class="score-value" id="high-score">0</div>
+                </div>
+                <div class="panel-box">
+                    <h3>점수</h3>
+                    <div class="score-value" id="score">0</div>
+                </div>
+                <div class="panel-box">
+                    <h3>레벨</h3>
+                    <div class="score-value" id="level">1</div>
+                </div>
+                <div class="panel-box">
+                    <h3>라인</h3>
+                    <div class="score-value" id="lines">0</div>
+                </div>
+            </div>
+
+            <div class="game-area">
+                <canvas id="game-board" width="300" height="600"></canvas>
+                <div class="game-overlay" id="game-overlay">
+                    <div class="overlay-content">
+                        <h2 id="overlay-title">테트리스</h2>
+                        <p id="overlay-message">스페이스바를 눌러 시작</p>
+                        <button class="btn" id="start-btn">게임 시작</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="side-panel right">
+                <div class="panel-box">
+                    <h3>다음 블록</h3>
+                    <canvas id="next-piece" width="120" height="120"></canvas>
+                </div>
+                <div class="panel-box controls">
+                    <h3>조작법</h3>
+                    <div class="control-item">← → 이동</div>
+                    <div class="control-item">↑ 회전</div>
+                    <div class="control-item">↓ 빠르게</div>
+                    <div class="control-item">Space 떨어뜨리기</div>
+                    <div class="control-item">P 일시정지</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>HTML, CSS, JavaScript로 제작</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
