@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>슈팅 게임</title>
+    <link rel="stylesheet" href="../shared/common.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <a href="../" class="back-link">← 게임 목록으로</a>
+        <h1>슈팅 게임</h1>
+        <p>적을 물리치고 우주를 지키세요!</p>
+    </header>
+
+    <main>
+        <div class="game-container">
+            <div class="side-panel">
+                <div class="panel-box">
+                    <h3>최고 점수</h3>
+                    <div class="score-value" id="high-score">0</div>
+                </div>
+                <div class="panel-box">
+                    <h3>점수</h3>
+                    <div class="score-value" id="score">0</div>
+                </div>
+                <div class="panel-box">
+                    <h3>레벨</h3>
+                    <div class="score-value" id="level">1</div>
+                </div>
+                <div class="panel-box">
+                    <h3>생명</h3>
+                    <div class="lives" id="lives">❤️❤️❤️</div>
+                </div>
+            </div>
+
+            <div class="game-area">
+                <canvas id="game-canvas" width="400" height="600"></canvas>
+                <div class="game-overlay" id="game-overlay">
+                    <div class="overlay-content">
+                        <h2 id="overlay-title">슈팅 게임</h2>
+                        <p id="overlay-message">스페이스바를 눌러 시작</p>
+                        <button class="btn" id="start-btn">게임 시작</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="side-panel">
+                <div class="panel-box controls">
+                    <h3>조작법</h3>
+                    <div class="control-item">← → 이동</div>
+                    <div class="control-item">Space 발사</div>
+                    <div class="control-item">P 일시정지</div>
+                </div>
+                <div class="panel-box power-ups">
+                    <h3>파워업</h3>
+                    <div class="power-item">🛡️ 보호막</div>
+                    <div class="power-item">⚡ 속도 증가</div>
+                    <div class="power-item">🔥 강화 탄환</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>HTML, CSS, JavaScript로 제작</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
