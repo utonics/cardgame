@@ -3,26 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Card Memory Game</title>
+    <title>카드 매칭 게임</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-        <h1>Card Memory Game</h1>
-        <p>Find all matching pairs!</p>
+        <h1>카드 매칭 게임</h1>
+        <p>같은 그림의 카드 짝을 모두 찾아보세요!</p>
     </header>
 
     <main>
         <div class="game-info">
             <div class="info-item">
-                <span class="label">Moves:</span>
+                <span class="label">시도:</span>
                 <span id="moves">0</span>
             </div>
             <div class="info-item">
-                <span class="label">Matched:</span>
+                <span class="label">매칭:</span>
                 <span id="matched">0</span> / <span id="total">8</span>
             </div>
-            <button id="restart-btn">Restart</button>
+            <button id="restart-btn">다시 시작</button>
         </div>
 
         <div class="game-board" id="game-board">
@@ -31,15 +31,15 @@
 
         <div class="modal" id="win-modal">
             <div class="modal-content">
-                <h2>Congratulations!</h2>
-                <p>You completed the game in <span id="final-moves">0</span> moves!</p>
-                <button id="play-again-btn">Play Again</button>
+                <h2>축하합니다!</h2>
+                <p><span id="final-moves">0</span>번 만에 성공했습니다!</p>
+                <button id="play-again-btn">다시 하기</button>
             </div>
         </div>
     </main>
 
     <footer>
-        <p>Created with HTML, CSS & JavaScript</p>
+        <p>HTML, CSS, JavaScript로 제작</p>
     </footer>
 
     <script src="script.js"></script>

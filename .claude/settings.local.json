@@ -4,7 +4,15 @@
       "Bash(start C:myappsnewhomeindex.html)",
       "Bash(start \"\" \"C:\\\\myapps\\\\newhome\\\\index.html\")",
       "Bash(git init:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nInitial commit: Card Memory Game\n\n- Add HTML structure with game board and modal\n- Add CSS with 3D flip animations and responsive design\n- Add JavaScript game logic for card matching\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git config:*)",
+      "Bash(git remote add:*)",
+      "Bash(git branch:*)",
+      "Bash(git push:*)",
+      "Bash(gh repo edit:*)",
+      "Bash(start \"\" \"https://utonics.github.io/cardgame/\")",
+      "Bash(git commit:*)"
     ]
   }
 }
